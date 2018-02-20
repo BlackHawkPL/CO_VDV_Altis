@@ -6,30 +6,31 @@ ACE_weather_syncWind = false;
 ACE_wind = [0,0,0];
 setWind [0,0, true];
 
-#define ZEUS_MODULES ["moduleremotecontrol_f","ace_zeus_modulesuppressivefire", "ace_zeus_moduleungarrison", \
-"ace_zeus_modulegarrison", "ace_zeus_modulesearchnearby", "ace_zeus_modulesearcharea", "ace_zeus_modulepatrolarea", \
-"ace_zeus_moduleglobalsetskill", "ace_zeus_moduledefendarea"]
-
-removeAllCuratorEditingAreas z1m;
-z1m setCuratorEditingAreaType true;
-z1m addCuratorEditingArea [0,getpos DZ,0];
-
 z1m addEventHandler [
 	"CuratorObjectRegistered",
 	{
 		_classes = _this select 1;
 		_costs = [];
 		{
-
-			_cost = if (_x in ZEUS_MODULES) then {[true,0]} else {[false,0]}; // Show only objects of type "Man", hide everything else
+			_cost = if (
+				(toLower _x) in ["moduleremotecontrol_f","ace_zeus_modulesuppressivefire", "ace_zeus_moduleungarrison",
+				"ace_zeus_modulegarrison", "ace_zeus_modulesearchnearby", "ace_zeus_modulesearcharea", "ace_zeus_modulepatrolarea",
+				"ace_zeus_moduleglobalsetskill", "ace_zeus_moduledefendarea"]
+			) then {[true,0]} else {[false,0]};
 			_costs = _costs + [_cost];
-		} forEach _classes; // Go through all classes and assign cost for each of them
+		} forEach _classes;
 		_costs
 	}
 ];
 
+removeAllCuratorEditingAreas z1m;
+z1m setCuratorEditingAreaType true;
+z1m addCuratorEditingArea [0,getpos DZ,0];
+
+
 if (isServer || !hasInterface) then {
 	{
+		private _time = _x;
 		[{
 			{
 				private _unit = _x;
@@ -37,9 +38,14 @@ if (isServer || !hasInterface) then {
 					{
 						_unit reveal [_x, 4];
 					} forEach allPlayers;
+					if (_time == 300) then {
+						_unit allowFleeing 0;
+						group _unit setBehaviour "Combat";
+						_unit doWatch DZ;
+					};
 				};
 			} forEach allUnits;
-		}, [], _x] call CBA_fnc_waitAndExecute;
+		}, [], _time] call CBA_fnc_waitAndExecute;
 	} forEach [300,600,900];
 };
 
@@ -64,27 +70,17 @@ if (isServer) then {
 				_kit = selectRandom ["RF", "RF", "RF", "RPG_AT", "RPG_AP", "LAT", "LAT", "MG"];
 			};
 			[_x, "Turkey_" + _kit] call FNC_GearScript;
-			_x allowFleeing 0;
-			doStop _x;
-			group _x setBehaviour "Combat";
-			_x doWatch DZ;
 		};
 	} forEach allUnits;
 
 	z1m addCuratorEditableObjects [_ind_units, true];
 
 	[{
-		dz_attack_1 setBehaviour "Aware";
-		units dz_attack_1 doMove getPos DZ;
-
-		dz_attack_2 setBehaviour "Aware";
-		units dz_attack_2 doMove getPos DZ;
-
-		dz_attack_3 setBehaviour "Aware";
-		units dz_attack_3 doMove getPos DZ;
-		
-		units dz_attack_2 doMove getPos DZ;
-	}, [], 300] call CBA_fnc_waitAndExecute;
+		{
+			[_x, "Aware"] remoteExec ["setBehiaviour", groupOwner _x];
+			[_x, getPos DZ] remoteExec ["move", groupOwner _x];
+		} forEach [dz_attack_1, dz_attack_2, dz_attack_3, dz_attack_2];
+	}, [], 310] call CBA_fnc_waitAndExecute;
 
 };
 

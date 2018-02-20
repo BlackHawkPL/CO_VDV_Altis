@@ -111,7 +111,6 @@ class RscText
 {
 	deletable = 0;
 	fade = 0;
-	access = 0;
 	type = 0;
 	idc = -1;
 	colorBackground[] = 
@@ -172,7 +171,6 @@ class RscStructuredText
 {
 	deletable = 0;
 	fade = 0;
-	access = 0;
 	type = 13;
 	idc = -1;
 	style = 0;
@@ -203,7 +201,6 @@ class RscPicture
 {
 	deletable = 0;
 	fade = 0;
-	access = 0;
 	type = 0;
 	idc = -1;
 	style = 48;
@@ -257,7 +254,6 @@ class RscEdit
 {
 	deletable = 0;
 	fade = 0;
-	access = 0;
 	type = 2;
 	x = 0;
 	y = 0;
@@ -325,7 +321,6 @@ class RscCombo
 {
 	deletable = 0;
 	fade = 0;
-	access = 0;
 	type = 4;
 	colorSelect[] = 
 	{
@@ -505,7 +500,6 @@ class RscListBox
 {
 	deletable = 0;
 	fade = 0;
-	access = 0;
 	type = 5;
 	rowHeight = 0;
 	colorText[] = 
@@ -685,7 +679,6 @@ class RscButton
 {
 	deletable = 0;
 	fade = 0;
-	access = 0;
 	type = 1;
 	text = "";
 	colorText[] = 
@@ -1053,7 +1046,6 @@ class RscSlider
 {
 	deletable = 0;
 	fade = 0;
-	access = 0;
 	type = 3;
 	style = 1024;
 	color[] = 
