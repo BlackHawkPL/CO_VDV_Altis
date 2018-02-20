@@ -8,7 +8,11 @@ setWind [0,0, true];
 
 #define ZEUS_MODULES ["moduleremotecontrol_f","ace_zeus_modulesuppressivefire", "ace_zeus_moduleungarrison", \
 "ace_zeus_modulegarrison", "ace_zeus_modulesearchnearby", "ace_zeus_modulesearcharea", "ace_zeus_modulepatrolarea", \
-"ace_zeus_moduleglobalsetskill", "ace_zeus_moduledefendarea", "ace_zeus_moduleeditableobjects"]
+"ace_zeus_moduleglobalsetskill", "ace_zeus_moduledefendarea"]
+
+removeAllCuratorEditingAreas z1m;
+z1m setCuratorEditingAreaType true;  
+z1m addCuratorEditingArea [0,getpos DZ,0];
 
 z1m addEventHandler [
 	"CuratorObjectRegistered",
@@ -36,6 +40,36 @@ if (isServer) then {
 	
 	// [resistance, "Local Militia", "player"] call FNC_AddTeam; //Adds a player team called Local Militia on side resistance (aka independent)
 
+	private _ind_units = [];
+	{
+		if (side _x == independent) then {
+			_ind_units pushBack _x;
+			private _kit = "RF";
+			if (vehicle _x == _x) then {
+				_kit = selectRandom ["RF", "RF", "RF", "RPG_AT", "RPG_AP", "LAT", "LAT", "MG"];
+			};
+			[_x, "Turkey_" + _kit] call FNC_GearScript;
+			_x allowFleeing 0;
+			doStop _x;
+			group _x setBehaviour "Combat";
+			_x doWatch DZ;
+		};
+	} forEach allUnits;
+
+	z1m addCuratorEditableObjects [_ind_units, true];
+
+	[{
+		dz_attack_1 setBehaviour "Aware";
+		units dz_attack_1 doMove getPos DZ;
+
+		dz_attack_2 setBehaviour "Aware";
+		units dz_attack_2 doMove getPos DZ;
+
+		dz_attack_3 setBehaviour "Aware";
+		units dz_attack_3 doMove getPos DZ;
+		
+		units dz_attack_2 doMove getPos DZ;
+	}, [], 30] call CBA_fnc_waitAndExecute;
 };
 
 if (!isDedicated) then {

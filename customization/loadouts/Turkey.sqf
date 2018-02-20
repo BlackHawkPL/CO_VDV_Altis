@@ -27,7 +27,6 @@ END_GROUP;
 case (package + "RF"): {
 	ADD_GROUP(uniform);
 	ADD_GROUP(IFAK);
-	ADD_GROUP(items);
 	
 	["hlc_20rnd_762x51_b_G3", 5] call FNC_AddItem;
 	["HandGrenade", 1] call FNC_AddItem;
@@ -38,7 +37,8 @@ case (package + "RF"): {
 case (package + "RPG_AT"): {
 	ADD_GROUP(uniform);
 	ADD_GROUP(IFAK);
-	ADD_GROUP(items);
+
+	["rhs_rpg_empty"] call FNC_AddItem;
 	
 	["hlc_20rnd_762x51_b_G3", 5] call FNC_AddItem;
 	["HandGrenade", 1] call FNC_AddItem;
@@ -52,7 +52,8 @@ case (package + "RPG_AT"): {
 case (package + "RPG_AP"): {
 	ADD_GROUP(uniform);
 	ADD_GROUP(IFAK);
-	ADD_GROUP(items);
+
+	["rhs_rpg_empty"] call FNC_AddItem;
 	
 	["hlc_20rnd_762x51_b_G3", 5] call FNC_AddItem;
 	["HandGrenade", 1] call FNC_AddItem;
@@ -66,7 +67,6 @@ case (package + "RPG_AP"): {
 case (package + "LAT"): {
 	ADD_GROUP(uniform);
 	ADD_GROUP(IFAK);
-	ADD_GROUP(items);
 	
 	["hlc_20rnd_762x51_b_G3", 5] call FNC_AddItem;
 	["HandGrenade", 1] call FNC_AddItem;
@@ -80,7 +80,6 @@ case (package + "LAT"): {
 case (package + "MG"): {
 	ADD_GROUP(uniform);
 	ADD_GROUP(IFAK);
-	ADD_GROUP(items);
 	
 	["JO_500rnd_MG3",1,"vest"] call FNC_AddItem;
 	["HandGrenade", 1] call FNC_AddItem;

@@ -3,7 +3,7 @@
 FNC_DOPARACHUTE = {
 	private ["_target", "_elev", "_rand", "_stear", "_class"];
 
-	if (!isDedicated) then {
+	if (!isDedicated && hasInterface) then {
 		_target = _this select 0;
 		_elev = _this select 1;
 		_rand = 100;
@@ -22,6 +22,8 @@ FNC_DOPARACHUTE = {
 		if (_stear) then {
 			_class = "Steerable_Parachute_F";
 		};
+
+		if (((typeOf player) find "pilot") != -1) exitWith {};
 
 		if (typeName _target == "SIDE") then {
 			if (side player isEqualTo _target) then {
