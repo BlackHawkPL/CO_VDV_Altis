@@ -30351,7 +30351,7 @@ class Mission
 			{
 			};
 			id=3288;
-			type="rhsgref_hidf_m113a3_m2";
+			type="rhsusf_m113_usarmy";
 			atlOffset=0.00026130676;
 		};
 		class Item263
@@ -30368,7 +30368,7 @@ class Mission
 			{
 			};
 			id=3289;
-			type="rhsgref_hidf_m113a3_m2";
+			type="rhsusf_m113_usarmy";
 			atlOffset=0.0001373291;
 		};
 		class Item264
