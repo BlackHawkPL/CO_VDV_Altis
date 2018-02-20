@@ -3,7 +3,7 @@
 FNC_DOPARACHUTE = {
 	private ["_target", "_elev", "_rand", "_stear", "_class"];
 
-	if (!isDedicated && hasInterface) then {
+	if (!isDedicated && hasInterface && (str (side player)) != "LOGIC") then {
 		_target = _this select 0;
 		_elev = _this select 1;
 		_rand = 100;

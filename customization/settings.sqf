@@ -11,7 +11,7 @@ setWind [0,0, true];
 "ace_zeus_moduleglobalsetskill", "ace_zeus_moduledefendarea"]
 
 removeAllCuratorEditingAreas z1m;
-z1m setCuratorEditingAreaType true;  
+z1m setCuratorEditingAreaType true;
 z1m addCuratorEditingArea [0,getpos DZ,0];
 
 z1m addEventHandler [
@@ -27,6 +27,21 @@ z1m addEventHandler [
 		_costs
 	}
 ];
+
+if (isServer || !hasInterface) then {
+	{
+		[{
+			{
+				private _unit = _x;
+				if (local _unit) then {
+					{
+						_unit reveal [_x, 4];
+					} forEach allPlayers;
+				};
+			} forEach allUnits;
+		}, [], _x] call CBA_fnc_waitAndExecute;
+	} forEach [300,600,900];
+};
 
 if (isServer) then {
 
@@ -69,7 +84,8 @@ if (isServer) then {
 		units dz_attack_3 doMove getPos DZ;
 		
 		units dz_attack_2 doMove getPos DZ;
-	}, [], 30] call CBA_fnc_waitAndExecute;
+	}, [], 300] call CBA_fnc_waitAndExecute;
+
 };
 
 if (!isDedicated) then {
