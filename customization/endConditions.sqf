@@ -1,4 +1,4 @@
-private _westCasualty = "USMC" call FNC_CasualtyPercentage; //Gets the casualty percentage of team "USMC"
+/*private _westCasualty = "USMC" call FNC_CasualtyPercentage; //Gets the casualty percentage of team "USMC"
 private _eastCasualty = "VDV" call FNC_CasualtyPercentage; //Gets the casualty percentage of team "VDV"
 
 if (_westCasualty >= 50) exitWith {
@@ -12,6 +12,7 @@ if (_eastCasualty >= 75) exitWith {
 	"USMC VICTORY<br />VDV has retreated due to casualties." call FNC_EndMission;
 	
 };
+*/
 /*
 Alternative methods of counting casualties
 

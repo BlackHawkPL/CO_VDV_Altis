@@ -5,6 +5,7 @@ ace_hearing_enableCombatDeafness = false;
 ACE_weather_syncWind = false;
 ACE_wind = [0,0,0];
 setWind [0,0, true];
+ACE_medical_enableUnconsciousnessAI = 0;
 
 z1m addEventHandler [
 	"CuratorObjectRegistered",
@@ -23,6 +24,8 @@ z1m addEventHandler [
 	}
 ];
 
+{_x setVariable ["acex_headless_blacklist", false];} forEach allUnits + allGroups;
+
 removeAllCuratorEditingAreas z1m;
 z1m setCuratorEditingAreaType true;
 z1m addCuratorEditingArea [0,getpos DZ,0];
@@ -30,23 +33,28 @@ z1m addCuratorEditingArea [0,getpos DZ,0];
 
 if (isServer || !hasInterface) then {
 	{
-		private _time = _x;
+		_x setskill ["spottime", 0.95];
+		_x setskill ["spotdistance", 0.95];
+		_x setskill ["aimingaccuracy", 0.25];
+		_x setskill ["aimingshake", 0.85];
+		_x setskill ["aimingspeed", 0.7];
+	} forEach allUnits;
+
+	{
 		[{
 			{
-				private _unit = _x;
-				if (local _unit) then {
-					{
-						_unit reveal [_x, 4];
-					} forEach allPlayers;
-					if (_time == 300) then {
-						_unit allowFleeing 0;
-						group _unit setBehaviour "Combat";
-						_unit doWatch DZ;
+				if (side _x == independent) then {
+					private _group = _x;
+					{_group reveal [vehicle _x, 4]} forEach allPlayers;
+					if (_forEachIndex == 0) then {
+						_group allowFleeing 0;
+						_group setBehaviour "Combat";
+						units _group doWatch DZ;
 					};
 				};
-			} forEach allUnits;
-		}, [], _time] call CBA_fnc_waitAndExecute;
-	} forEach [300,600,900];
+			} forEach allGroups;
+		}, [], _x] call CBA_fnc_waitAndExecute;
+	} forEach [300, 600, 900];
 };
 
 if (isServer) then {
@@ -56,8 +64,8 @@ if (isServer) then {
 	FW_TimeLimit = 30; //Time limit in minutes, to disable the time limit set it to 0
 	FW_TimeLimitMessage = "TIME LIMIT REACHED!"; //The message displayed when the time runs out
 
-	[west, "USMC", "player"] call FNC_AddTeam; //Adds a player team called USMC on side west
-	[east, "VDV", "ai"] call FNC_AddTeam; //Adds a ai team called VDV on side east
+	[independent, "Turkey", "ai"] call FNC_AddTeam; //Adds a player team called USMC on side west
+	[east, "VDV", "player"] call FNC_AddTeam; //Adds a ai team called VDV on side east
 	
 	// [resistance, "Local Militia", "player"] call FNC_AddTeam; //Adds a player team called Local Militia on side resistance (aka independent)
 
