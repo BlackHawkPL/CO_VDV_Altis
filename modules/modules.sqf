@@ -44,3 +44,4 @@
 //#include "start_on_team_color\root.sqf"
 //#include "start_text\root.sqf"
 //#include "task_control\root.sqf"
+#include "headless_ai\root.sqf"

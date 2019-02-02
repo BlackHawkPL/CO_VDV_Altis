@@ -24,37 +24,33 @@ z1m addEventHandler [
 	}
 ];
 
-{_x setVariable ["acex_headless_blacklist", false];} forEach allUnits + allGroups;
-
 removeAllCuratorEditingAreas z1m;
 z1m setCuratorEditingAreaType true;
 z1m addCuratorEditingArea [0,getpos DZ,0];
 
-
-if (isServer || !hasInterface) then {
-	{
-		_x setskill ["spottime", 0.95];
-		_x setskill ["spotdistance", 0.95];
-		_x setskill ["aimingaccuracy", 0.25];
-		_x setskill ["aimingshake", 0.85];
-		_x setskill ["aimingspeed", 0.7];
-	} forEach allUnits;
-
-	{
-		[{
-			{
-				if (side _x == independent) then {
-					private _group = _x;
-					{_group reveal [vehicle _x, 4]} forEach allPlayers;
-					if (_forEachIndex == 0) then {
-						_group allowFleeing 0;
-						_group setBehaviour "Combat";
-						units _group doWatch DZ;
-					};
+if (!hasInterface && !isServer) then {
+	private _ind_units = [];
+	[{
+		{
+			if (side _x == independent) then {
+				_ind_units pushBack _x;
+				private _kit = "RF";
+				if (vehicle _x == _x) then {
+					_kit = selectRandom ["RF", "RF", "RF", "RPG_AT", "RPG_AP", "LAT", "LAT", "MG"];
 				};
-			} forEach allGroups;
-		}, [], _x] call CBA_fnc_waitAndExecute;
-	} forEach [300, 600, 900];
+				[_x, "Turkey_" + _kit] call FNC_GearScript;
+			};
+		} forEach allUnits;
+	}, [], 10] call CBA_fnc_waitAndExecute;
+
+	z1m addCuratorEditableObjects [_ind_units, true];
+
+	[{
+		{
+			[_x, "Aware"] remoteExec ["setBehiaviour", groupOwner _x];
+			[_x, getPos DZ] remoteExec ["move", groupOwner _x];
+		} forEach [dz_attack_1, dz_attack_2, dz_attack_3, dz_attack_2];
+	}, [], 310] call CBA_fnc_waitAndExecute;
 };
 
 if (isServer) then {
@@ -68,27 +64,6 @@ if (isServer) then {
 	[east, "VDV", "player"] call FNC_AddTeam; //Adds a ai team called VDV on side east
 	
 	// [resistance, "Local Militia", "player"] call FNC_AddTeam; //Adds a player team called Local Militia on side resistance (aka independent)
-
-	private _ind_units = [];
-	{
-		if (side _x == independent) then {
-			_ind_units pushBack _x;
-			private _kit = "RF";
-			if (vehicle _x == _x) then {
-				_kit = selectRandom ["RF", "RF", "RF", "RPG_AT", "RPG_AP", "LAT", "LAT", "MG"];
-			};
-			[_x, "Turkey_" + _kit] call FNC_GearScript;
-		};
-	} forEach allUnits;
-
-	z1m addCuratorEditableObjects [_ind_units, true];
-
-	[{
-		{
-			[_x, "Aware"] remoteExec ["setBehiaviour", groupOwner _x];
-			[_x, getPos DZ] remoteExec ["move", groupOwner _x];
-		} forEach [dz_attack_1, dz_attack_2, dz_attack_3, dz_attack_2];
-	}, [], 310] call CBA_fnc_waitAndExecute;
 
 };
 
